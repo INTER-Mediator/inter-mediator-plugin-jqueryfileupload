@@ -1,0 +1,28 @@
+{
+  "name": "inter-mediator-plugin-jqueryfileupload",
+  "version": "1.0.0",
+  "description": "INTER-Mediator plug-in to use the JQuery FileUpload.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/INTER-Mediator/inter-mediator-plugin-jqueryfileupload.git"
+  },
+  "keywords": [
+    "INTER-Mediator",
+    "jquery",
+    "fileuploader"
+  ],
+  "dependencies": {
+    "jquery": "*",
+    "jquery-fileuploader": "*"
+  },
+  "author": "Masayuki Nii",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/INTER-Mediator/inter-mediator-plugin-jqueryfileupload/issues"
+  },
+  "homepage": "https://github.com/INTER-Mediator/inter-mediator-plugin-jqueryfileupload#readme"
+}
