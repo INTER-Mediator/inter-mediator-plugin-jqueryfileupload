@@ -1,6 +1,6 @@
 {
   "name": "inter-mediator-plugin-jqueryfileupload",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "INTER-Mediator plug-in to use the JQuery FileUpload.",
   "main": "index.js",
   "scripts": {
@@ -16,9 +16,6 @@
     "fileuploader"
   ],
   "dependencies": {
-    "jquery": "*",
-    "jquery-ui": "*",
-    "blueimp-file-upload-npm": "*"
   },
   "author": "Masayuki Nii",
   "license": "MIT",
