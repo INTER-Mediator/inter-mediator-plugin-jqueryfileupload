@@ -181,7 +181,7 @@ IMParts_Catalog.jquery_fileupload = {
           })(),
           done: (function () {
             let cName = cInfo.context.contextName
-            let updateContext = targetNode.getAttribute('data-im-update');
+            let updateContext = targetNode[0].parentNode.parentNode.parentNode.getAttribute('data-im-update');
             updateContext = updateContext ? updateContext : cName;
             return function (e, data) {
               let result = INTERMediator_DBAdapter.uploadFileAfterSucceed(
