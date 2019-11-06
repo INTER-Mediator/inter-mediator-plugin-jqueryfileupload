@@ -18,6 +18,7 @@
  */
 IMParts_Catalog.jquery_fileupload = {
   panelWidth: '200px',
+  fullUpdate: true,
 
   instanciate: function (targetNode) {
     let container, node, nodeId, pNode = targetNode
@@ -192,7 +193,10 @@ IMParts_Catalog.jquery_fileupload = {
               data.jqXHR.abort()
               if (result) {
                 INTERMediatorLog.flushMessage()
-                INTERMediator.construct(/*IMLibContextPool.contextFromName(cName)*/)
+                if (IMParts_Catalog.jquery_fileupload.fullUpdate) {
+                  INTERMediator.construct()
+                } else {
+                  INTERMediator.construct(IMLibContextPool.contextFromName(cName))
               }
             }
           })(),
