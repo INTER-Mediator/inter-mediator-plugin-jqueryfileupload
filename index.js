@@ -197,6 +197,7 @@ IMParts_Catalog.jquery_fileupload = {
                   INTERMediator.construct()
                 } else {
                   INTERMediator.construct(IMLibContextPool.contextFromName(cName))
+                }
               }
             }
           })(),
