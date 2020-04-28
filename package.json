@@ -1,6 +1,6 @@
 {
   "name": "inter-mediator-plugin-jqueryfileupload",
-  "version": "1.0.8",
+  "version": "1.1",
   "description": "INTER-Mediator plug-in to use the JQuery FileUpload.",
   "main": "index.js",
   "scripts": {
