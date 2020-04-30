@@ -17,7 +17,9 @@
  * Blueimp jQuery File Upload (https://github.com/blueimp/jQuery-File-Upload)
  */
 IMParts_Catalog.jquery_fileupload = {
-  panelWidth: '300px',
+  panelWidth: '200px',
+  selectButtonClasses: 'btn btn-success fileinput-button',
+  sendButtonClasses: 'btn btn-primary',
   fullUpdate: true,
   isShowProgressBar: true,
   isShowPreview: true,
@@ -33,7 +35,7 @@ IMParts_Catalog.jquery_fileupload = {
     pNode.appendChild(container)
 
     node = document.createElement('SPAN')
-    node.setAttribute('class', 'btn btn-success fileinput-button')
+    node.setAttribute('class', IMParts_Catalog.jquery_fileupload.selectButtonClasses)
     container.appendChild(node)
     pNode = node
 
@@ -74,7 +76,7 @@ IMParts_Catalog.jquery_fileupload = {
     node.setAttribute('id', nodeId + '-uploadarea')
     node.style.display = 'none'
     node.style.marginTop = '20px'
-    node.setAttribute('class', 'btn btn-primary')
+    node.setAttribute('class', IMParts_Catalog.jquery_fileupload.sendButtonClasses)
     container.appendChild(node)
     pNode = node
 
@@ -107,13 +109,18 @@ IMParts_Catalog.jquery_fileupload = {
     container.appendChild(pNode)
 
     node = document.createElement('IMG')
-    node.setAttribute('id', nodeId + '-preview')
+    node.setAttribute('id', nodeId + '-imagepreview')
     node.style.width = '100%'
     node.style.maxWidth = '100vw'
     pNode.appendChild(node)
-    if (!this.isShowPreview) {
-      node.style.display = 'none'
-    }
+    node.style.display = 'none'
+    node = document.createElement('iframe')
+    node.setAttribute('id', nodeId + '-iframepreview')
+    node.style.width = '100%'
+    node.style.maxWidth = '100vw'
+    pNode.appendChild(node)
+    node.style.display = 'none'
+    node.style.border = 'none'
 
     targetNode._im_getComponentId = (function () {
       var theId = nodeId
@@ -159,13 +166,18 @@ IMParts_Catalog.jquery_fileupload = {
               let idValue = targetId
               return function (e, data) {
                 $('#' + idValue + '-filename').text(data.files[0].name)
-                $('#' + idValue + '-filenamearea').css('display', 'inline')
-                $('#' + idValue + '-uploadarea').css('display', 'inline')
+                $('#' + idValue + '-filenamearea').css('display', 'block')
+                $('#' + idValue + '-uploadarea').css('display', 'block')
                 $('#' + idValue + '-uploadarea').click(function () {
                   data.submit()
                 })
               }
             })(),
+            dropZone: $('#' + targetId),
+            // drop: function (e) {
+            //   e.preventDefault()
+            //   console.log('###')
+            // },
             submit: (function () {
               let cName = cInfo.context.contextName, cField = cInfo.field,
                   keyField = keyValue[0], kv = keyValue[1], encrypt = new JSEncrypt()
@@ -247,28 +259,35 @@ IMParts_Catalog.jquery_fileupload = {
             $('#' + targetId + '-previewarea').css('display', 'none')
             targetNode.fileupload({
               dataType: 'json',
-              url: INTERMediatorOnPage.getEntryPath() + '?access=uploadfile',
+              // url: INTERMediatorOnPage.getEntryPath() + '?access=uploadfile',
               limitConcurrentUploads: 1,
-              //formData: formData,
               add: (function () {
                 let idValue = targetId
                 return function (e, data) {
-                  let targetFile = data.files[0]
+                  let targetFile = data.files[0], targetFiles = data.files, sign, another, previewNode
                   $('#' + idValue + '-filename').text(targetFile.name)
                   $('#' + idValue + '-filenamearea').css('display', 'block')
                   let imageReader = new FileReader()
                   imageReader.addEventListener('load', function () {
-                    document.querySelector('#' + idValue + '-previewarea').style.display = 'block'
-                    document.querySelector('#' + idValue + '-preview').src = this.result
+                    if (IMParts_Catalog.jquery_fileupload.isShowPreview) {
+                      document.querySelector('#' + idValue + '-previewarea').style.display = 'block'
+                      another = targetFile.type.indexOf('image') === 0 ? 'iframe' : 'image'
+                      document.querySelector('#' + idValue + '-' + another + 'preview').style.display = 'none'
+                      sign = targetFile.type.indexOf('image') === 0 ? 'image' : 'iframe'
+                      previewNode = document.querySelector('#' + idValue + '-' + sign + 'preview')
+                      previewNode.src = this.result
+                      previewNode.style.display = 'inline'
+                    }
+                    IMParts_Catalog.jquery_fileupload.values[idValue] = {file: targetFile, kind: 'attached'}
                   }, false)
                   imageReader.readAsDataURL(targetFile)
-                  let fileReader = new FileReader()
-                  fileReader.addEventListener('load', function () {
-                    IMParts_Catalog.jquery_fileupload.values[idValue] = {name: targetFile.name, content: this.result}
-                  }, false)
-                  fileReader.readAsArrayBuffer(targetFile)
                 }
-              })()
+              })(),
+              dropZone: $('#' + targetId),
+              // drop: function (e) {
+              //   e.preventDefault()
+              //   console.log('###')
+              // }
             })
           }
         }
