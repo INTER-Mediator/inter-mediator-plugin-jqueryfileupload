@@ -167,6 +167,7 @@ IMParts_Catalog.jquery_fileupload = {
               return function (e, data) {
                 $('#' + idValue + '-filename').text(data.files[0].name)
                 $('#' + idValue + '-filenamearea').css('display', 'block')
+                $('#' + idValue + '-uploadarea').css('display', 'inline-block')
                 $('#' + idValue + '-uploadarea').click(function () {
                   data.submit()
                 })
