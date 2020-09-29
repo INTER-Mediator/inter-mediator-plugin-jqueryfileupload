@@ -19,7 +19,7 @@
 IMParts_Catalog.jquery_fileupload = {
   panelWidth: '200px',
   selectButtonClasses: 'btn btn-success fileinput-button',
-  sendButtonClasses: 'btn btn-primary',
+  sendButtonClasses: 'btn btn-primary filesend-button',
   fullUpdate: true,
   isShowProgressBar: true,
   isShowPreview: true,
@@ -72,7 +72,7 @@ IMParts_Catalog.jquery_fileupload = {
     // pNode.appendChild(document.createTextNode(' '))
     // pNode.appendChild(document.createElement('BR'))
 
-    node = document.createElement('DIV')
+    node = document.createElement('SPAN')
     node.setAttribute('id', nodeId + '-uploadarea')
     node.style.display = 'none'
     node.style.marginTop = '20px'
