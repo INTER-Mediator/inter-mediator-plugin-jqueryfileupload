@@ -180,13 +180,9 @@ IMParts_Catalog.jquery_fileupload = {
             // },
             submit: (function () {
               let cName = cInfo.context.contextName, cField = cInfo.field,
-                  keyField = keyValue[0], kv = keyValue[1], encrypt = new JSEncrypt()
-              encrypt.setPublicKey(INTERMediatorOnPage.publickey)
+                  keyField = keyValue[0], kv = keyValue[1]
               return function (e, data) {
                 let fdata = []
-                let encrypt = new JSEncrypt()
-                encrypt.setKey(INTERMediatorOnPage.publickey)
-
                 fdata.push({name: 'access', value: 'uploadfile'})
                 fdata.push({name: '_im_contextnewrecord', value: 'uploadfile'})
                 fdata.push({name: '_im_contextname', value: cName})
@@ -205,12 +201,16 @@ IMParts_Catalog.jquery_fileupload = {
                   } else {
                     fdata.push({name: 'response', value: 'dummydummy'})
                   }
-                  fdata.push({
-                    name: 'cresponse',
-                    value: encrypt.encrypt(
+                  if (INTERMediatorOnPage.isNativeAuth || INTERMediatorOnPage.isLDAP) {
+                    const encrypt = new JSEncrypt()
+                    encrypt.setKey(INTERMediatorOnPage.publickey)
+                    fdata.push({
+                      name: 'cresponse',
+                      value: encrypt.encrypt(
                         INTERMediatorOnPage.authCryptedPassword.substr(0, 220) +
                         IMLib.nl_char + INTERMediatorOnPage.authChallenge)
-                  })
+                    })
+                  }
                 }
                 data.formData = fdata
               }
