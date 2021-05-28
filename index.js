@@ -284,9 +284,18 @@ IMParts_Catalog.jquery_fileupload = {
               add: (function () {
                 let idValue = targetId
                 return function (e, data) {
-                  let targetFile = data.files[0], targetFiles = data.files, sign, another, previewNode
-                  $('#' + idValue + '-filename').text(targetFile.name)
+                  let targetFile = data.files[0], sign, another, previewNode
                   $('#' + idValue + '-filenamearea').css('display', 'block')
+                  if (!Array.isArray(IMParts_Catalog.jquery_fileupload.values[idValue])) {
+                    const fnStr = $('#' + idValue + '-filename').text()
+                    if(fnStr){
+                      $('#' + idValue + '-filename').text(`${fnStr}, ${targetFile.name}`)
+                    } else {
+                      $('#' + idValue + '-filename').text(targetFile.name)
+                    }
+                  } else {
+                    $('#' + idValue + '-filename').text(targetFile.name)
+                  }
                   let imageReader = new FileReader()
                   imageReader.addEventListener('load', function () {
                     if (IMParts_Catalog.jquery_fileupload.isShowPreview) {
