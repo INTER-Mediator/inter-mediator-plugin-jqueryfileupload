@@ -23,6 +23,7 @@ IMParts_Catalog.jquery_fileupload = {
   fullUpdate: true,
   isShowProgressBar: true,
   isShowPreview: true,
+  multiFileInPostOnly: false,
 
   instanciate: function (targetNode) {
     let container, node, nodeId, pNode = targetNode
@@ -297,9 +298,19 @@ IMParts_Catalog.jquery_fileupload = {
                       previewNode.src = this.result
                       previewNode.style.display = 'inline'
                     }
-                    IMParts_Catalog.jquery_fileupload.values[idValue] = {
-                      file: targetFile,
-                      kind: 'attached'
+                    if (IMParts_Catalog.jquery_fileupload.multiFileInPostOnly) {
+                      if (!Array.isArray(IMParts_Catalog.jquery_fileupload.values[idValue])) {
+                        IMParts_Catalog.jquery_fileupload.values[idValue] = []
+                      }
+                      IMParts_Catalog.jquery_fileupload.values[idValue].push({
+                        file: targetFile,
+                        kind: 'attached'
+                      })
+                    } else {
+                      IMParts_Catalog.jquery_fileupload.values[idValue] = {
+                        file: targetFile,
+                        kind: 'attached'
+                      }
                     }
                   }, false)
                   imageReader.readAsDataURL(targetFile)
