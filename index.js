@@ -180,7 +180,7 @@ IMParts_Catalog.jquery_fileupload = {
             // },
             submit: (function () {
               let cName = cInfo.context.contextName, cField = cInfo.field,
-                  keyField = keyValue[0], kv = keyValue[1]
+                keyField = keyValue[0], kv = keyValue[1]
               return function (e, data) {
                 let fdata = []
                 fdata.push({name: 'access', value: 'uploadfile'})
@@ -192,12 +192,31 @@ IMParts_Catalog.jquery_fileupload = {
                 fdata.push({name: 'authuser', value: INTERMediatorOnPage.authUser})
                 if (INTERMediatorOnPage.authUser.length > 0) {
                   fdata.push({name: 'clientid', value: INTERMediatorOnPage.clientId})
-                  if (INTERMediatorOnPage.authHashedPassword && INTERMediatorOnPage.authChallenge) {
-                    shaObj = new jsSHA('SHA-256', 'TEXT')
-                    shaObj.setHMACKey(INTERMediatorOnPage.authChallenge, 'TEXT')
-                    shaObj.update(INTERMediatorOnPage.authHashedPassword)
-                    hmacValue = shaObj.getHMAC('HEX')
-                    fdata.push({name: 'response', value: hmacValue})
+                  if ((INTERMediatorOnPage.authHashedPassword
+                    || INTERMediatorOnPage.authHashedPassword2m
+                    || INTERMediatorOnPage.authHashedPassword2)
+                    && INTERMediatorOnPage.authChallenge) {
+                    if (INTERMediatorOnPage.passwordHash < 1.1 && INTERMediatorOnPage.authHashedPassword) {
+                      const shaObj = new jsSHA('SHA-256', 'TEXT')
+                      shaObj.setHMACKey(INTERMediatorOnPage.authChallenge, 'TEXT')
+                      shaObj.update(INTERMediatorOnPage.authHashedPassword)
+                      const hmacValue = shaObj.getHMAC('HEX')
+                      fdata.push({name: 'response', value: hmacValue})
+                    }
+                    if (INTERMediatorOnPage.passwordHash < 1.6 && INTERMediatorOnPage.authHashedPassword2m) {
+                      const shaObj = new jsSHA('SHA-256', 'TEXT')
+                      shaObj.setHMACKey(INTERMediatorOnPage.authChallenge, 'TEXT')
+                      shaObj.update(INTERMediatorOnPage.authHashedPassword2m)
+                      const hmacValue = shaObj.getHMAC('HEX')
+                      fdata.push({name: 'response2m', value: hmacValue})
+                    }
+                    if (INTERMediatorOnPage.passwordHash < 2.1 && INTERMediatorOnPage.authHashedPassword2) {
+                      const shaObj = new jsSHA('SHA-256', 'TEXT')
+                      shaObj.setHMACKey(INTERMediatorOnPage.authChallenge, 'TEXT')
+                      shaObj.update(INTERMediatorOnPage.authHashedPassword2)
+                      const hmacValue = shaObj.getHMAC('HEX')
+                      fdata.push({name: 'response2', value: hmacValue})
+                    }
                   } else {
                     fdata.push({name: 'response', value: 'dummydummy'})
                   }
@@ -221,12 +240,12 @@ IMParts_Catalog.jquery_fileupload = {
               updateContext = updateContext ? updateContext : cName
               return function (e, data) {
                 let result = INTERMediator_DBAdapter.uploadFileAfterSucceed(
-                    data.jqXHR,
-                    function () {
-                    },
-                    function () {
-                    },
-                    true
+                  data.jqXHR,
+                  function () {
+                  },
+                  function () {
+                  },
+                  true
                 )
                 data.jqXHR.abort()
                 if (result) {
@@ -278,7 +297,10 @@ IMParts_Catalog.jquery_fileupload = {
                       previewNode.src = this.result
                       previewNode.style.display = 'inline'
                     }
-                    IMParts_Catalog.jquery_fileupload.values[idValue] = {file: targetFile, kind: 'attached'}
+                    IMParts_Catalog.jquery_fileupload.values[idValue] = {
+                      file: targetFile,
+                      kind: 'attached'
+                    }
                   }, false)
                   imageReader.readAsDataURL(targetFile)
                 }
