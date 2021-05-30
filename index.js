@@ -193,28 +193,28 @@ IMParts_Catalog.jquery_fileupload = {
                 fdata.push({name: 'authuser', value: INTERMediatorOnPage.authUser})
                 if (INTERMediatorOnPage.authUser.length > 0) {
                   fdata.push({name: 'clientid', value: INTERMediatorOnPage.clientId})
-                  if ((INTERMediatorOnPage.authHashedPassword
-                    || INTERMediatorOnPage.authHashedPassword2m
-                    || INTERMediatorOnPage.authHashedPassword2)
+                  if ((INTERMediatorOnPage.authHashedPassword()
+                    || INTERMediatorOnPage.authHashedPassword2m()
+                    || INTERMediatorOnPage.authHashedPassword2())
                     && INTERMediatorOnPage.authChallenge) {
-                    if (INTERMediatorOnPage.passwordHash < 1.1 && INTERMediatorOnPage.authHashedPassword) {
+                    if (INTERMediatorOnPage.passwordHash < 1.1 && INTERMediatorOnPage.authHashedPassword()) {
                       const shaObj = new jsSHA('SHA-256', 'TEXT')
                       shaObj.setHMACKey(INTERMediatorOnPage.authChallenge, 'TEXT')
-                      shaObj.update(INTERMediatorOnPage.authHashedPassword)
+                      shaObj.update(INTERMediatorOnPage.authHashedPassword())
                       const hmacValue = shaObj.getHMAC('HEX')
                       fdata.push({name: 'response', value: hmacValue})
                     }
-                    if (INTERMediatorOnPage.passwordHash < 1.6 && INTERMediatorOnPage.authHashedPassword2m) {
+                    if (INTERMediatorOnPage.passwordHash < 1.6 && INTERMediatorOnPage.authHashedPassword2m()) {
                       const shaObj = new jsSHA('SHA-256', 'TEXT')
                       shaObj.setHMACKey(INTERMediatorOnPage.authChallenge, 'TEXT')
-                      shaObj.update(INTERMediatorOnPage.authHashedPassword2m)
+                      shaObj.update(INTERMediatorOnPage.authHashedPassword2m())
                       const hmacValue = shaObj.getHMAC('HEX')
                       fdata.push({name: 'response2m', value: hmacValue})
                     }
-                    if (INTERMediatorOnPage.passwordHash < 2.1 && INTERMediatorOnPage.authHashedPassword2) {
+                    if (INTERMediatorOnPage.passwordHash < 2.1 && INTERMediatorOnPage.authHashedPassword2()) {
                       const shaObj = new jsSHA('SHA-256', 'TEXT')
                       shaObj.setHMACKey(INTERMediatorOnPage.authChallenge, 'TEXT')
-                      shaObj.update(INTERMediatorOnPage.authHashedPassword2)
+                      shaObj.update(INTERMediatorOnPage.authHashedPassword2())
                       const hmacValue = shaObj.getHMAC('HEX')
                       fdata.push({name: 'response2', value: hmacValue})
                     }
@@ -227,7 +227,7 @@ IMParts_Catalog.jquery_fileupload = {
                     fdata.push({
                       name: 'cresponse',
                       value: encrypt.encrypt(
-                        INTERMediatorOnPage.authCryptedPassword.substr(0, 220) +
+                        INTERMediatorOnPage.authCryptedPassword().substr(0, 220) +
                         IMLib.nl_char + INTERMediatorOnPage.authChallenge)
                     })
                   }
