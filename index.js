@@ -191,7 +191,7 @@ IMParts_Catalog.jquery_fileupload = {
                 fdata.push({name: '_im_keyfield', value: keyField})
                 fdata.push({name: '_im_keyvalue', value: kv})
                 fdata.push({name: 'authuser', value: INTERMediatorOnPage.authUser()})
-                if (INTERMediatorOnPage.authUser().length > 0) {
+                if (INTERMediatorOnPage.authUser() && INTERMediatorOnPage.authUser().length > 0) {
                   fdata.push({name: 'clientid', value: INTERMediatorOnPage.clientId()})
                   if ((INTERMediatorOnPage.authHashedPassword()
                     || INTERMediatorOnPage.authHashedPassword2m()
