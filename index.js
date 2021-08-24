@@ -170,7 +170,7 @@ IMParts_Catalog.jquery_fileupload = {
                 if (IMParts_Catalog.jquery_fileupload.fileExtRequirements) {
                   let hasMatchExt = false
                   for (const ext of IMParts_Catalog.jquery_fileupload.fileExtRequirements) {
-                    if (new RegExp(`\.(${ext})$/i`).test(data.files[0].name)) {
+                    if (new RegExp(`\.(${ext})$`, 'i').test(data.files[0].name)) {
                       hasMatchExt = true
                     }
                   }
@@ -300,7 +300,7 @@ IMParts_Catalog.jquery_fileupload = {
                   if (IMParts_Catalog.jquery_fileupload.fileExtRequirements) {
                     let hasMatchExt = false
                     for (const ext of IMParts_Catalog.jquery_fileupload.fileExtRequirements) {
-                      if (new RegExp(`\.(${ext})$/i`).test(targetFile.name)) {
+                      if (new RegExp(`\.(${ext})$`, 'i').test(targetFile.name)) {
                         hasMatchExt = true
                       }
                     }
