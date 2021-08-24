@@ -24,6 +24,7 @@ IMParts_Catalog.jquery_fileupload = {
   isShowProgressBar: true,
   isShowPreview: true,
   multiFileInPostOnly: false,
+  fileExtRequirements: null, // or ['csv']
 
   instanciate: function (targetNode) {
     let container, node, nodeId, pNode = targetNode
@@ -166,6 +167,17 @@ IMParts_Catalog.jquery_fileupload = {
             add: (function () {
               let idValue = targetId
               return function (e, data) {
+                if (IMParts_Catalog.jquery_fileupload.fileExtRequirements) {
+                  let hasMatchExt = false
+                  for (const ext of IMParts_Catalog.jquery_fileupload.fileExtRequirements) {
+                    if (new RegExp(`\.(${ext})$/i`).test(data.files[0].name)) {
+                      hasMatchExt = true
+                    }
+                  }
+                  if (!hasMatchExt) {
+                    return
+                  }
+                }
                 $('#' + idValue + '-filename').text(data.files[0].name)
                 $('#' + idValue + '-filenamearea').css('display', 'block')
                 $('#' + idValue + '-uploadarea').css('display', 'inline-block')
@@ -285,10 +297,21 @@ IMParts_Catalog.jquery_fileupload = {
                 let idValue = targetId
                 return function (e, data) {
                   let targetFile = data.files[0], sign, another, previewNode
+                  if (IMParts_Catalog.jquery_fileupload.fileExtRequirements) {
+                    let hasMatchExt = false
+                    for (const ext of IMParts_Catalog.jquery_fileupload.fileExtRequirements) {
+                      if (new RegExp(`\.(${ext})$/i`).test(targetFile.name)) {
+                        hasMatchExt = true
+                      }
+                    }
+                    if (!hasMatchExt) {
+                      return
+                    }
+                  }
                   $('#' + idValue + '-filenamearea').css('display', 'block')
                   if (!Array.isArray(IMParts_Catalog.jquery_fileupload.values[idValue])) {
                     const fnStr = $('#' + idValue + '-filename').text()
-                    if(fnStr){
+                    if (fnStr) {
                       $('#' + idValue + '-filename').text(`${fnStr}, ${targetFile.name}`)
                     } else {
                       $('#' + idValue + '-filename').text(targetFile.name)
