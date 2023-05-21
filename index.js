@@ -184,6 +184,20 @@ IMParts_Catalog.jquery_fileupload = {
                 $('#' + idValue + '-uploadarea').click(function () {
                   data.submit()
                 })
+                const targetFile = data.files[0]
+                let imageReader = new FileReader()
+                imageReader.addEventListener('load', function () {
+                  if (IMParts_Catalog.jquery_fileupload.isShowPreview) {
+                    document.querySelector('#' + idValue + '-previewarea').style.display = 'block'
+                    another = targetFile.type.indexOf('image') === 0 ? 'iframe' : 'image'
+                    document.querySelector('#' + idValue + '-' + another + 'preview').style.display = 'none'
+                    sign = targetFile.type.indexOf('image') === 0 ? 'image' : 'iframe'
+                    previewNode = document.querySelector('#' + idValue + '-' + sign + 'preview')
+                    previewNode.src = this.result
+                    previewNode.style.display = 'inline'
+                  }
+                }, false)
+                imageReader.readAsDataURL(targetFile)
               }
             })(),
             dropZone: $('#' + targetId),
