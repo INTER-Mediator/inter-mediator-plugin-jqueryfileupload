@@ -206,6 +206,7 @@ IMParts_Catalog.jquery_fileupload = {
             //   console.log('###')
             // },
             submit: (function () {
+              let idValue = targetId
               let cName = cInfo.context.contextName, cField = cInfo.field,
                 keyField = keyValue[0], kv = keyValue[1]
               return function (e, data) {
@@ -259,9 +260,13 @@ IMParts_Catalog.jquery_fileupload = {
                   }
                 }
                 data.formData = fdata
+                if (INTERMediatorOnPage.doBeforeValueChange) {
+                  INTERMediatorOnPage.doBeforeValueChange(idValue)
+                }
               }
             })(),
             done: (function () {
+              let idValue = targetId
               let cName = cInfo.context.contextName
               let updateContext = targetNode[0].parentNode.parentNode.parentNode.getAttribute('data-im-update')
               updateContext = updateContext ? updateContext : cName
@@ -274,6 +279,9 @@ IMParts_Catalog.jquery_fileupload = {
                   },
                   true
                 )
+                if (INTERMediatorOnPage.doAfterValueChange) {
+                  INTERMediatorOnPage.doAfterValueChange(idValue)
+                }
                 data.jqXHR.abort()
                 if (result) {
                   INTERMediatorLog.flushMessage()
