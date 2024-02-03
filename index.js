@@ -26,7 +26,7 @@ IMParts_Catalog.jquery_fileupload = {
   multiFileInPostOnly: false,
   fileExtRequirements: null, // or ['csv']
 
-  instanciate: function (targetNode) {
+  instantiate: function (targetNode) {
     let container, node, nodeId, pNode = targetNode
     nodeId = targetNode.getAttribute('id')
     this.ids.push(nodeId)

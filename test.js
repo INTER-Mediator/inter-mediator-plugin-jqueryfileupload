@@ -9,7 +9,7 @@ eval(fs.readFileSync('./index.js').toString());
 
 test('Object exists, and has fundamental methods.', () => {
   expect(typeof IMParts_Catalog.jquery_fileupload).toBe('object')
-  expect(typeof IMParts_Catalog.jquery_fileupload.instanciate).toBe('function')
+  expect(typeof IMParts_Catalog.jquery_fileupload.instantiate).toBe('function')
   expect(typeof IMParts_Catalog.jquery_fileupload.finish).toBe('function')
   }
 )
