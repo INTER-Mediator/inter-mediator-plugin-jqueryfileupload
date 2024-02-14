@@ -271,14 +271,7 @@ IMParts_Catalog.jquery_fileupload = {
               let updateContext = targetNode[0].parentNode.parentNode.parentNode.getAttribute('data-im-update')
               updateContext = updateContext ? updateContext : cName
               return function (e, data) {
-                let result = INTERMediator_DBAdapter.uploadFileAfterSucceed(
-                  data.jqXHR,
-                  function () {
-                  },
-                  function () {
-                  },
-                  true
-                )
+                let result = INTERMediator_DBAdapter.uploadFileAfterSucceed(data.jqXHR.responseText,null, null, true)
                 if (INTERMediatorOnPage.doAfterValueChange) {
                   INTERMediatorOnPage.doAfterValueChange(idValue)
                 }
