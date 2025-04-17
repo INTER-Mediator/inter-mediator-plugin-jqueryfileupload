@@ -7,8 +7,8 @@
  * Please see the full license for details:
  * https://github.com/INTER-Mediator/INTER-Mediator/blob/master/dist-docs/License.txt
  *
- * This plugin requires the following libraries, they can include with CDN services.
- * The sample file "fileupload_jQuery_MySQL.html" of INTER-Mediator located
+ * This plugin requres the following libraries, they can include with CDN services.
+ * The sample file "fileupload_jQuery_MySQL.html" of INTER-Mediator loacated
  * "INTER-Mediator/samples/Sample_webpage/" includes the loading code ot them.
  *
  * Bootstrap (http://getbootstrap.com/)
@@ -151,7 +151,7 @@ IMParts_Catalog.jquery_fileupload = {
   values: {},
 
   finish: function () {
-    let targetId, targetNode, cInfo, keyValue, i
+    let shaObj, hmacValue, targetId, targetNode, cInfo, keyValue, i
     for (i = 0; i < this.ids.length; i++) {
       targetId = this.ids[i]
       cInfo = IMLibContextPool.getContextInfoFromId(targetId, '')
@@ -221,8 +221,8 @@ IMParts_Catalog.jquery_fileupload = {
                 if (INTERMediatorOnPage.authUser() && INTERMediatorOnPage.authUser().length > 0) {
                   fdata.push({name: 'clientid', value: INTERMediatorOnPage.clientId()})
                   if ((INTERMediatorOnPage.authHashedPassword()
-                    || INTERMediatorOnPage.authHashedPassword2m()
-                    || INTERMediatorOnPage.authHashedPassword2())
+                      || INTERMediatorOnPage.authHashedPassword2m()
+                      || INTERMediatorOnPage.authHashedPassword2())
                     && INTERMediatorOnPage.authChallenge) {
                     if (INTERMediatorOnPage.passwordHash < 1.1 && INTERMediatorOnPage.authHashedPassword()) {
                       const shaObj = new jsSHA('SHA-256', 'TEXT')
@@ -271,7 +271,14 @@ IMParts_Catalog.jquery_fileupload = {
               let updateContext = targetNode[0].parentNode.parentNode.parentNode.getAttribute('data-im-update')
               updateContext = updateContext ? updateContext : cName
               return function (e, data) {
-                let result = INTERMediator_DBAdapter.uploadFileAfterSucceed(data.jqXHR.responseText,null, null, true)
+                let result = INTERMediator_DBAdapter.uploadFileAfterSucceed(
+                  data.jqXHR,
+                  function () {
+                  },
+                  function () {
+                  },
+                  true
+                )
                 if (INTERMediatorOnPage.doAfterValueChange) {
                   INTERMediatorOnPage.doAfterValueChange(idValue)
                 }
