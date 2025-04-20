@@ -27,16 +27,16 @@ IMParts_Catalog.jquery_fileupload = {
   fileExtRequirements: null, // or ['csv']
 
   instantiate: function (targetNode) {
-    let container, node, nodeId, pNode = targetNode
-    nodeId = targetNode.getAttribute('id')
+    let pNode = targetNode
+    const nodeId = targetNode.getAttribute('id')
     this.ids.push(nodeId)
 
-    container = document.createElement('DIV')
+    const container = document.createElement('DIV')
     container.setAttribute('class', 'jquery-fileupload-container')
     container.style.width = this.panelWidth
     pNode.appendChild(container)
 
-    node = document.createElement('SPAN')
+    let node = document.createElement('SPAN')
     node.setAttribute('class', IMParts_Catalog.jquery_fileupload.selectButtonClasses)
     container.appendChild(node)
     pNode = node
@@ -125,19 +125,19 @@ IMParts_Catalog.jquery_fileupload = {
     node.style.border = 'none'
 
     targetNode._im_getComponentId = (function () {
-      var theId = nodeId
+      const theId = nodeId
       return function () {
         return theId
       }
     })()
     targetNode._im_setValue = (function () {
-      var aNode = targetNode
+      const aNode = targetNode
       return function (str) {
         aNode.value = str
       }
     })()
     targetNode._im_getValue = (function () {
-      var theId = nodeId
+      const theId = nodeId
       return function () {
         if (IMParts_Catalog.jquery_fileupload.values[theId]) {
           return IMParts_Catalog.jquery_fileupload.values[theId]
@@ -151,21 +151,20 @@ IMParts_Catalog.jquery_fileupload = {
   values: {},
 
   finish: function () {
-    let shaObj, hmacValue, targetId, targetNode, cInfo, keyValue, i
-    for (i = 0; i < this.ids.length; i++) {
-      targetId = this.ids[i]
-      cInfo = IMLibContextPool.getContextInfoFromId(targetId, '')
-      targetNode = $('#' + targetId + '-fileupload')
+    for (let i = 0; i < this.ids.length; i++) {
+      const targetId = this.ids[i]
+      const cInfo = IMLibContextPool.getContextInfoFromId(targetId, '')
+      const targetNode = $('#' + targetId + '-fileupload')
       if (targetNode) {
         if (cInfo) { // The element is included in normal (not postonly) context.
-          keyValue = cInfo.record.split('=')
+          const keyValue = cInfo.record.split('=')
           targetNode.fileupload({
             dataType: 'json',
             url: INTERMediatorOnPage.getEntryPath() + '?access=uploadfile',
             limitConcurrentUploads: 1,
             //formData: formData,
             add: (function () {
-              let idValue = targetId
+              const idValue = targetId
               return function (e, data) {
                 if (IMParts_Catalog.jquery_fileupload.fileExtRequirements) {
                   let hasMatchExt = false
@@ -185,14 +184,14 @@ IMParts_Catalog.jquery_fileupload = {
                   data.submit()
                 })
                 const targetFile = data.files[0]
-                let imageReader = new FileReader()
+                const imageReader = new FileReader()
                 imageReader.addEventListener('load', function () {
                   if (IMParts_Catalog.jquery_fileupload.isShowPreview) {
                     document.querySelector('#' + idValue + '-previewarea').style.display = 'block'
-                    another = targetFile.type.indexOf('image') === 0 ? 'iframe' : 'image'
+                    const another = targetFile.type.indexOf('image') === 0 ? 'iframe' : 'image'
                     document.querySelector('#' + idValue + '-' + another + 'preview').style.display = 'none'
-                    sign = targetFile.type.indexOf('image') === 0 ? 'image' : 'iframe'
-                    previewNode = document.querySelector('#' + idValue + '-' + sign + 'preview')
+                    const sign = targetFile.type.indexOf('image') === 0 ? 'image' : 'iframe'
+                    const previewNode = document.querySelector('#' + idValue + '-' + sign + 'preview')
                     previewNode.src = this.result
                     previewNode.style.display = 'inline'
                   }
@@ -206,8 +205,8 @@ IMParts_Catalog.jquery_fileupload = {
             //   console.log('###')
             // },
             submit: (function () {
-              let idValue = targetId
-              let cName = cInfo.context.contextName, cField = cInfo.field,
+              const idValue = targetId
+              const cName = cInfo.context.contextName, cField = cInfo.field,
                 keyField = keyValue[0], kv = keyValue[1]
               return function (e, data) {
                 let fdata = []
@@ -266,12 +265,12 @@ IMParts_Catalog.jquery_fileupload = {
               }
             })(),
             done: (function () {
-              let idValue = targetId
-              let cName = cInfo.context.contextName
+              const idValue = targetId
+              const cName = cInfo.context.contextName
               let updateContext = targetNode[0].parentNode.parentNode.parentNode.getAttribute('data-im-update')
               updateContext = updateContext ? updateContext : cName
               return function (e, data) {
-                let result = INTERMediator_DBAdapter.uploadFileAfterSucceed(data.jqXHR.responseText,null, null, true)
+                const result = INTERMediator_DBAdapter.uploadFileAfterSucceed(data.jqXHR.responseText, null, null, true)
                 if (INTERMediatorOnPage.doAfterValueChange) {
                   INTERMediatorOnPage.doAfterValueChange(idValue)
                 }
@@ -293,7 +292,7 @@ IMParts_Catalog.jquery_fileupload = {
               data.jqXHR.abort()
             },
             progressall: (function () {
-              let idValue = targetId
+              const idValue = targetId
               return function (e, data) {
                 let progress = parseInt(data.loaded / data.total * 100, 10)
                 $('#' + idValue + '-progress').css('width', progress + '%')
@@ -309,9 +308,9 @@ IMParts_Catalog.jquery_fileupload = {
               // url: INTERMediatorOnPage.getEntryPath() + '?access=uploadfile',
               limitConcurrentUploads: 1,
               add: (function () {
-                let idValue = targetId
+                const idValue = targetId
                 return function (e, data) {
-                  let targetFile = data.files[0], sign, another, previewNode
+                  const targetFile = data.files[0]
                   if (IMParts_Catalog.jquery_fileupload.fileExtRequirements) {
                     let hasMatchExt = false
                     for (const ext of IMParts_Catalog.jquery_fileupload.fileExtRequirements) {
@@ -334,14 +333,14 @@ IMParts_Catalog.jquery_fileupload = {
                   } else {
                     $('#' + idValue + '-filename').text(targetFile.name)
                   }
-                  let imageReader = new FileReader()
+                  const imageReader = new FileReader()
                   imageReader.addEventListener('load', function () {
                     if (IMParts_Catalog.jquery_fileupload.isShowPreview) {
                       document.querySelector('#' + idValue + '-previewarea').style.display = 'block'
-                      another = targetFile.type.indexOf('image') === 0 ? 'iframe' : 'image'
+                      const another = targetFile.type.indexOf('image') === 0 ? 'iframe' : 'image'
                       document.querySelector('#' + idValue + '-' + another + 'preview').style.display = 'none'
-                      sign = targetFile.type.indexOf('image') === 0 ? 'image' : 'iframe'
-                      previewNode = document.querySelector('#' + idValue + '-' + sign + 'preview')
+                      const sign = targetFile.type.indexOf('image') === 0 ? 'image' : 'iframe'
+                      const previewNode = document.querySelector('#' + idValue + '-' + sign + 'preview')
                       previewNode.src = this.result
                       previewNode.style.display = 'inline'
                     }
