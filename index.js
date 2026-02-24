@@ -25,6 +25,7 @@ IMParts_Catalog.jquery_fileupload = {
   isShowPreview: true,
   multiFileInPostOnly: false,
   fileExtRequirements: null, // or ['csv']
+  submitAfterSelect: false,
 
   instantiate: function (targetNode) {
     let pNode = targetNode
@@ -183,6 +184,10 @@ IMParts_Catalog.jquery_fileupload = {
                 $('#' + idValue + '-uploadarea').click(function () {
                   data.submit()
                 })
+                if (IMParts_Catalog.jquery_fileupload.submitAfterSelect) {
+                  data.submit()
+                  return
+                }
                 const targetFile = data.files[0]
                 const imageReader = new FileReader()
                 imageReader.addEventListener('load', function () {
